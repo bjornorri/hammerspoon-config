@@ -3,6 +3,7 @@ require('utils')
 require('caffeine')
 require('position')
 require('focus')
+require('jumpcut')
 require('wifi')
 require('usb')
 
@@ -16,3 +17,4 @@ hs.hotkey.bind({"cmd", "alt"}, "V", function() hs.eventtap.keyStrokes(hs.pastebo
 
 -- Notify that the config was loaded.
 hs.notify.new({title="Hammerspoon", informativeText="Config loaded"}):send()
+
