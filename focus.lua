@@ -3,7 +3,7 @@ local browser = 'Google Chrome'
 local terminal = 'iTerm'
 local editor = 'Atom'
 local xcode = 'Xcode'
-local mail = 'Polymail'
+local mail = 'Spark'
 local simulator = 'Simulator'
 local music = 'Spotify'
 local finder = 'Finder'
@@ -53,4 +53,3 @@ function smartLaunchOrFocus(appName)
         hs.application.launchOrFocus(appName)
     end
 end
-
