@@ -7,10 +7,6 @@ local lastSSID = hs.wifi.currentNetwork()
 function ssidChangedCallback()
     newSSID = hs.wifi.currentNetwork()
 
-    if contains(uniSSIDs, newSSID) then
-        hs.audiodevice.defaultOutputDevice():setMuted(true)
-    end
-
     if newSSID == "WG3C_3" then
         hs.notify.new({title="Hammerspoon", informativeText="Joined WG3C_3"}):send()
     end
