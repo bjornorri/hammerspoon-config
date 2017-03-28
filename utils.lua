@@ -2,11 +2,12 @@
 hyper = {"shift", "cmd", "alt", "ctrl", "fn", "numpad"}
 
 -- Define contains function for arrays.
-function contains (arr, val)
-    for index, value in ipairs (arr) do
-        if value == val then
+function contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
             return true
         end
     end
     return false
 end
+
