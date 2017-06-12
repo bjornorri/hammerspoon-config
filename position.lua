@@ -34,3 +34,14 @@ hs.hotkey.bind(hyper, "right", function()
     f.h = max.h
     win:setFrame(f)
 end)
+
+-- Screen management.
+hs.hotkey.bind(hyper, "down", function()
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    local allScreens = hs.screen.allScreens()
+    local index = hs.fnutils.indexOf(allScreens, screen)
+    local newIndex = #allScreens - (index + 1) % #allScreens
+    local newScreen = allScreens[newIndex]
+    win:moveToScreen(newScreen)
+end)

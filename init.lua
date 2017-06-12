@@ -1,5 +1,5 @@
-require('reload')
 require('utils')
+require('reload')
 require('caffeine')
 require('position')
 require('focus')
