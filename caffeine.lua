@@ -25,3 +25,8 @@ if caffeine then
         setCaffeineDisplay(false)
     end
 end
+
+-- Add hotkey to sleep.
+hs.hotkey.bind(hyper, '-', function()
+    hs.caffeinate.systemSleep()
+end)
