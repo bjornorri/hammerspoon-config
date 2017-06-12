@@ -10,4 +10,11 @@ function reloadConfig(files)
         hs.reload()
     end
 end
+
+-- Manually reload config with hyper-enter.
+hs.hotkey.bind(hyper, "return", function()
+    hs.reload()
+end)
+
 hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
+

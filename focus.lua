@@ -2,7 +2,7 @@
 local browser = 'Google Chrome'
 local terminal = 'iTerm'
 local editor = 'Atom'
-local xcode = 'Xcode'
+local xcode = 'Xcode-beta'
 local mail = 'Spark'
 local simulator = 'Simulator'
 local music = 'Spotify'
