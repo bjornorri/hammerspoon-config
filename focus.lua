@@ -1,15 +1,16 @@
 -- Application constants.
 local browser = 'Google Chrome'
 local terminal = 'iTerm'
-local editor = 'Atom'
-local xcode = 'Xcode-beta'
-local mail = 'Spark'
+local editor = 'Visual Studio Code'
+local xcode = 'Xcode'
+local mail = 'Polymail'
 local simulator = 'Simulator'
 local music = 'Spotify'
 local finder = 'Finder'
 local preview = 'Preview'
 local slack = 'Slack'
 local messenger = 'Messages'
+local videoPlayer = "VLC"
 
 local appkeys = {
     b = browser,
@@ -23,7 +24,8 @@ local appkeys = {
     f = finder,
     p = preview,
     c = slack,
-    e = messenger
+    e = messenger,
+    w = videoPlayer
 }
 
 
