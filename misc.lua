@@ -1,6 +1,16 @@
 -- Play/Pause Spotify.
 hs.hotkey.bind(hyper, "space", function()
-    hs.spotify.playpause()
+    if (hs.itunes.isPlaying()) then
+        hs.itunes.playpause()
+    elseif (hs.spotify.isPlaying()) then
+        hs.spotify.playpause()
+    elseif (hs.itunes.isRunning()) then
+        hs.itunes.playpause()
+    elseif (hs.spotify.isRunning()) then
+        hs.spotify.playpause()
+    else
+        hs.itunes.playpause()
+    end
 end)
 
 -- Defeat paste blocking.

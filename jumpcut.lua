@@ -58,7 +58,7 @@ function update()
     end
 end
 
-hs.hotkey.bind(hyper, 'v', function()
+hs.hotkey.bind(hyper, "c", function()
     local f = jumpcut:frame()
     jumpcut:popupMenu(hs.geometry.point(f.x, f.y + f.h))
 end)

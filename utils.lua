@@ -1,5 +1,5 @@
 -- Define the hyper key.
-hyper = {"shift", "cmd", "alt", "ctrl", "fn", "numpad"}
+hyper = {"shift", "cmd", "alt", "ctrl"}
 
 -- Define contains function for arrays.
 function contains(table, element)
