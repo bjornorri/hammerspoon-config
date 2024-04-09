@@ -1,49 +1,36 @@
 -- Application constants.
-local browser = 'Safari'
-local terminal = 'iTerm'
-local xcode = 'Xcode'
-local messenger = 'Rambox'
-local music = 'iTunes'
-local finder = 'Finder'
-local preview = 'Preview'
+local browser = "Safari"
+local terminal = "iTerm"
+local finder = "Finder"
+local mail = "Mail"
 
 local appkeys = {
-    b = browser,
-    t = terminal,
-    x = xcode,
-    m = messenger,
-    u = music,
-    f = finder,
-    p = preview
+	b = browser,
+	t = terminal,
+	f = finder,
+	m = mail,
 }
 
--- Launches or focuses the app.
--- Cycles through windows if already focused.
-function smartLaunchOrFocus(appName)
-    local app = hs.application.find(appName)
-    local focusedWindow = hs.window.focusedWindow()
-    if app ~= nil and app:isFrontmost() and focusedWindow ~= nil then
-        -- Sort the windows by id to have consistent looping.
-        local windows = hs.fnutils.filter(app:allWindows(), function(window)
-            return window:isStandard() or window:isFullScreen() or window:isMinimized()
-        end)
-        table.sort(windows, function(a, b) return a:id() < b:id() end)
+local function smartLaunchOrFocus(appName)
+	local focusedApp = hs.application.frontmostApplication()
+	local app = hs.application.find(appName)
 
-        local currentIndex = hs.fnutils.indexOf(windows, focusedWindow)
-        local newIndex = (currentIndex == #windows) and 1 or currentIndex + 1
-        windows[newIndex]:focus()
-    else
-        hs.application.launchOrFocus(appName)
-    end
+	-- Launch or focus app if not already focused.
+	if focusedApp ~= app then
+		hs.application.launchOrFocus(appName)
+		return
+	end
+
+	-- Cycle the app's windows with the built-in Cmd+` shortcut.
+	hs.eventtap.keyStroke({ "cmd" }, "`", 10)
 end
 
 -- Bind hotkeys to apps.
-function bindHotkeys()
-    for key, app in pairs(appkeys) do
-        hs.hotkey.bind(hyper, key, function()
-            smartLaunchOrFocus(app)
-        end)
-    end
+local function bindHotkeys()
+	for key, app in pairs(appkeys) do
+		hs.hotkey.bind(Hyper, key, function()
+			smartLaunchOrFocus(app)
+		end)
+	end
 end
 bindHotkeys()
-
