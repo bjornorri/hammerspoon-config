@@ -47,3 +47,60 @@ hs.hotkey.bind(Hyper, "down", function()
 	local newScreen = allScreens[newIndex]
 	win:moveToScreen(newScreen)
 end)
+
+-- Gets the n frontmost windows, ordered from front to back.
+local function getFrontmostWindows(n)
+	local allWindows = hs.window.orderedWindows()
+	local filter = hs.window.filter.default
+	local windows = hs.fnutils.ifilter(allWindows, function(w)
+		return filter:isWindowAllowed(w)
+	end)
+	local frontmostWindows = {}
+	for i, window in ipairs(windows) do
+		table.insert(frontmostWindows, window)
+		if i == n then
+			break
+		end
+	end
+	return frontmostWindows
+end
+
+local function getLayout(windows, frames)
+	if #windows == 0 or windows == nil then
+		return {}
+	end
+	local screen = windows[1]:screen()
+	local layout = {}
+	for i, window in ipairs(windows) do
+		local entry = { nil, window, screen, frames[i], nil, nil }
+		table.insert(layout, entry)
+	end
+	return layout
+end
+
+hs.hotkey.bind(Hyper, "space", function()
+	local windows = getFrontmostWindows(2)
+	if #windows == 0 or windows == nil then
+		return
+	end
+	windows[#windows]:focus()
+end)
+
+hs.hotkey.bind(Hyper, "1", function()
+	local windows = getFrontmostWindows(1)
+	local frames = {
+		hs.layout.maximized,
+	}
+	local layout = getLayout(windows, frames)
+	hs.layout.apply(layout)
+end)
+
+hs.hotkey.bind(Hyper, "2", function()
+	local windows = getFrontmostWindows(2)
+	local frames = {
+		hs.layout.left50,
+		hs.layout.right50,
+	}
+	local layout = getLayout(windows, frames)
+	hs.layout.apply(layout)
+end)
