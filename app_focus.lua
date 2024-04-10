@@ -29,24 +29,50 @@ local appkeys = {
 	a = calendar,
 }
 
-local function smartLaunchOrFocus(appName)
-	local focusedApp = hs.application.frontmostApplication()
-	-- local app = hs.application.get(appName) or hs.application.find(appName)
-	local app = hs.application.find(appName)
+local function hasNoWindows(app)
+	if app:title() == "Finder" then
+		return #app:allWindows() == 1
+	end
+	return #app:allWindows() == 0
+end
 
+local function keyStroke(mods, key)
+	hs.eventtap.keyStroke(mods, key, 10)
+end
+
+local function createNewWindow(app)
+	if app:bundleID() == "com.apple.mail" then
+		keyStroke({ "cmd", "alt" }, "n")
+	else
+		keyStroke({ "cmd" }, "n")
+	end
+end
+
+local function focusNextWindow()
+	keyStroke({ "cmd" }, "`")
+end
+
+local function smartLaunchOrFocus(app)
 	-- Launch or focus app if not already focused.
-	if focusedApp ~= app then
+	if not app:isFrontmost() then
 		hs.application.launchOrFocus(app:path())
 		return
 	end
 
-	-- Cycle the app's windows with the built-in Cmd+` shortcut.
-	hs.eventtap.keyStroke({ "cmd" }, "`", 10)
+	-- Create a new window if the app has no windows.
+	if hasNoWindows(app) then
+		createNewWindow(app)
+		return
+	end
+
+	-- Cycle the app's windows if one is already focused.
+	focusNextWindow()
 end
 
 -- Bind hotkeys to apps.
 local function bindHotkeys()
-	for key, app in pairs(appkeys) do
+	for key, appName in pairs(appkeys) do
+		local app = hs.application.get(appName) or hs.application.find(appName)
 		hs.hotkey.bind(Hyper, key, function()
 			smartLaunchOrFocus(app)
 		end)
