@@ -1,4 +1,6 @@
--- Uncomment this to generate Hammerspoon lua annotations.
+-- Get rid of error notifications.
+hs.notify.withdrawAll()
+
 hs.loadSpoon("EmmyLua")
 
 require("hyper_key")
@@ -8,4 +10,4 @@ require("windows")
 require("app_focus")
 
 --- Notify that the config was loaded.
-hs.notify.show("Hammerspoon", "Config Loaded", "")
+hs.notify.new({ title = "Hammerspoon", subTitle = "Config Loaded" }):autoWithdraw(true):send()
