@@ -1,4 +1,4 @@
-require("hyper_key")
+-- Manage windows with hotkeys.
 
 -- Move instantly.
 hs.window.animationDuration = 0
@@ -39,8 +39,6 @@ end)
 
 -- Move to next display.
 hs.hotkey.bind(Hyper, "down", function()
-	local screen = hs.window.focusedWindow():screen()
-
 	local win = hs.window.focusedWindow()
 	local screen = win:screen()
 	local allScreens = hs.screen.allScreens()
