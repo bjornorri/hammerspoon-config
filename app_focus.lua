@@ -73,9 +73,11 @@ end
 local function bindHotkeys()
 	for key, appName in pairs(appkeys) do
 		local app = hs.application.get(appName) or hs.application.find(appName)
-		hs.hotkey.bind(Hyper, key, function()
-			smartLaunchOrFocus(app)
-		end)
+		if app ~= nil then
+			hs.hotkey.bind(Hyper, key, function()
+				smartLaunchOrFocus(app)
+			end)
+		end
 	end
 end
 bindHotkeys()
