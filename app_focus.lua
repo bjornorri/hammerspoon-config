@@ -52,10 +52,13 @@ local function focusNextWindow()
 	keyStroke({ "cmd" }, "`")
 end
 
-local function smartLaunchOrFocus(app)
+local function smartLaunchOrFocus(appName)
+	local focusedApp = hs.application.frontmostApplication()
+	local app = hs.application.get(appName) or hs.application.find(appName)
+
 	-- Launch or focus app if not already focused.
-	if not app:isFrontmost() then
-		hs.application.launchOrFocus(app:path())
+	if focusedApp ~= app then
+		hs.application.launchOrFocus(appName)
 		return
 	end
 
@@ -72,12 +75,9 @@ end
 -- Bind hotkeys to apps.
 local function bindHotkeys()
 	for key, appName in pairs(appkeys) do
-		local app = hs.application.get(appName) or hs.application.find(appName)
-		if app ~= nil then
-			hs.hotkey.bind(Hyper, key, function()
-				smartLaunchOrFocus(app)
-			end)
-		end
+		hs.hotkey.bind(Hyper, key, function()
+			smartLaunchOrFocus(appName)
+		end)
 	end
 end
 bindHotkeys()
