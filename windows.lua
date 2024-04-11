@@ -86,6 +86,11 @@ hs.hotkey.bind(Hyper, "space", function()
 	windows[#windows]:focus()
 end)
 
+hs.hotkey.bind(Hyper, "tab", function()
+	local window = hs.window.focusedWindow()
+	window:moveToScreen(window:screen():next(), false, false, 0)
+end)
+
 hs.hotkey.bind(Hyper, "1", function()
 	local windows = getFrontmostWindows(1)
 	local frames = {
