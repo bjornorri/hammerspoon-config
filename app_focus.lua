@@ -11,13 +11,15 @@ local function getEnv(variable)
 end
 
 -- Application constants.
-local finder = getEnv("HS_FILE_BROWSER") or "Finder"
-local browser = getEnv("HS_BROWSER") or "Safari"
-local terminal = getEnv("HS_TERMINAL") or "iTerm"
-local mail = getEnv("HS_EMAIL") or "Mail"
-local editor = getEnv("HS_EDITOR") or "Code"
-local chat = getEnv("HS_CHAT") or "Messenger"
-local calendar = getEnv("HS_CALENDAR") or nil
+-- Getting an app by its bundle ID seems to be the fastest and most reliable way to retrieve it.
+-- The app_bundle_id_logger module logs the bundle ID of the active app to the console for convenience.
+local finder = getEnv("HS_FILE_BROWSER") or "com.apple.finder"
+local browser = getEnv("HS_BROWSER") or "com.apple.Safari"
+local terminal = getEnv("HS_TERMINAL") or "com.googlecode.iterm2"
+local mail = getEnv("HS_EMAIL") or "com.apple.mail"
+local editor = getEnv("HS_EDITOR") or "com.microsoft.VSCode"
+local chat = getEnv("HS_CHAT") or "com.facebook.archon" -- Messenger
+local calendar = getEnv("HS_CALENDAR") or "com.apple.iCal"
 
 local appkeys = {
 	f = finder,
@@ -52,13 +54,13 @@ local function focusNextWindow()
 	keyStroke({ "cmd" }, "`")
 end
 
-local function smartLaunchOrFocus(appName)
+local function smartLaunchOrFocus(bundleID)
 	local focusedApp = hs.application.frontmostApplication()
-	local app = hs.application.get(appName) or hs.application.find(appName)
+	local app = hs.application.get(bundleID)
 
 	-- Launch or focus app if not already focused.
 	if focusedApp ~= app then
-		hs.application.launchOrFocus(appName)
+		hs.application.open(bundleID)
 		return
 	end
 
