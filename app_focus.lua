@@ -20,6 +20,8 @@ local mail = getEnv("HS_EMAIL") or "com.apple.mail"
 local editor = getEnv("HS_EDITOR") or "com.microsoft.VSCode"
 local chat = getEnv("HS_CHAT") or "com.facebook.archon" -- Messenger
 local calendar = getEnv("HS_CALENDAR") or "com.apple.iCal"
+local whatsapp = getEnv("HS_WHATSAPP") or "net.whatsapp.WhatsApp"
+local xcode = getEnv("HS_XCODE") or "com.apple.dt.Xcode"
 
 local appkeys = {
 	f = finder,
@@ -29,6 +31,8 @@ local appkeys = {
 	e = editor,
 	c = chat,
 	a = calendar,
+	w = whatsapp,
+	x = xcode,
 }
 
 local function hasNoWindows(app)
