@@ -12,4 +12,8 @@ local function reloadConfig(files)
 	end
 end
 
+-- Auto reload.
 hs.pathwatcher.new(hs.configdir, reloadConfig):start()
+
+-- Add reload hotkey.
+hs.hotkey.bind(Hyper, "f5", hs.reload)
