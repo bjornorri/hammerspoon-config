@@ -16,4 +16,6 @@ end
 hs.pathwatcher.new(hs.configdir, reloadConfig):start()
 
 -- Add reload hotkey.
-hs.hotkey.bind(Hyper, "f5", hs.reload)
+hs.hotkey.bind(Hyper, "f5", function()
+	hs.reload()
+end)
