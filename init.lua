@@ -6,7 +6,7 @@ hs.loadSpoon("EmmyLua")
 require("hyper_key")
 require("reload_config")
 require("force_paste")
-require("windows")
+require("native_windows")
 require("app_focus")
 require("app_bundle_id_logger")
 
