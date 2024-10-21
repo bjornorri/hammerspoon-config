@@ -1,39 +1,10 @@
 -- Assign hotkeys to apps.
+require("src/key_handler")
+require("src/app_mapping")
+
+local bindableKeys = "abcdefghijklmnopqrstuvwxyz"
 
 hs.application.enableSpotlightForNameSearches(true)
-
--- Read environment variables.
-local function getEnv(variable)
-	local result = hs.execute(string.format("printenv | grep %s | tr -d '\n'", variable), true)
-	if result ~= nil then
-		return string.match(result, "=(.*)")
-	end
-end
-
--- Application constants.
--- Getting an app by its bundle ID seems to be the fastest and most reliable way to retrieve it.
--- The app_bundle_id_logger module logs the bundle ID of the active app to the console for convenience.
-local finder = getEnv("HS_FILE_BROWSER") or "com.apple.finder"
-local browser = getEnv("HS_BROWSER") or "com.apple.Safari"
-local terminal = getEnv("HS_TERMINAL") or "com.googlecode.iterm2"
-local mail = getEnv("HS_EMAIL") or "com.apple.mail"
-local editor = getEnv("HS_EDITOR") or "com.microsoft.VSCode"
-local chat = getEnv("HS_CHAT") or "com.facebook.archon" -- Messenger
-local calendar = getEnv("HS_CALENDAR") or "com.apple.iCal"
-local whatsapp = getEnv("HS_WHATSAPP") or "net.whatsapp.WhatsApp"
-local xcode = getEnv("HS_XCODE") or "com.apple.dt.Xcode"
-
-local appkeys = {
-	f = finder,
-	b = browser,
-	t = terminal,
-	m = mail,
-	e = editor,
-	c = chat,
-	a = calendar,
-	w = whatsapp,
-	x = xcode,
-}
 
 local function hasNoWindows(app)
 	if app:title() == "Finder" then
@@ -78,12 +49,38 @@ local function smartLaunchOrFocus(bundleID)
 	focusNextWindow()
 end
 
--- Bind hotkeys to apps.
-local function bindHotkeys()
-	for key, appName in pairs(appkeys) do
-		hs.hotkey.bind(Hyper, key, function()
-			smartLaunchOrFocus(appName)
-		end)
+local appMapping = AppMapping:new("AppMapping")
+
+local function createMapping(key, app)
+	appMapping:setMapping(key, app)
+	appName = hs.application.get(app):name()
+	hs.notify.new({ title = "Hyper + " .. key, subTitle = "Now opens " .. appName }):autoWithdraw(true):send()
+end
+
+local function clearMapping(key)
+	appMapping:clearMapping(key)
+	hs.notify.new({ title = "Hyper + " .. key, subTitle = "Hotkey cleared" }):autoWithdraw(true):send()
+end
+
+-- Dynamically bind hotkeys to apps.
+local function handleKeys()
+	for i = 1, #bindableKeys do
+		local key = bindableKeys:sub(i, i)
+
+		KeyHandler:new(Hyper, key, function()
+			-- Retrieve mapping and focus the app.
+			if appMapping:hasMapping(key) then
+				local app = appMapping:getMapping(key)
+				smartLaunchOrFocus(app)
+			end
+		end, function()
+			if appMapping:hasMapping(key) then
+				clearMapping(key)
+			else
+				local app = hs.application.frontmostApplication():bundleID()
+				createMapping(key, app)
+			end
+		end, 2)
 	end
 end
-bindHotkeys()
+handleKeys()
