@@ -30,10 +30,24 @@ local function focusNextWindow()
 end
 
 local function smartLaunchOrFocus(bundleID)
-	local focusedApp = hs.application.frontmostApplication()
 	local app = hs.application.get(bundleID)
 
-	-- Launch or focus app if not already focused.
+	-- Launch app if not already launched.
+	if not app then
+		hs.notify
+			.new({
+				title = hs.application.nameForBundleID(bundleID),
+				subTitle = "Launching...",
+				contentImage = hs.image.imageFromAppBundle(bundleID),
+			})
+			:autoWithdraw(true)
+			:send()
+		hs.application.open(bundleID)
+	end
+
+	local focusedApp = hs.application.frontmostApplication()
+
+	-- Focus app if not already focused.
 	if focusedApp ~= app then
 		hs.application.open(bundleID)
 		return
@@ -51,9 +65,9 @@ end
 
 local appMapping = AppMapping:new("AppMapping")
 
-local function createMapping(key, app)
-	appMapping:setMapping(key, app)
-	appName = hs.application.get(app):name()
+local function createMapping(key, bundleID)
+	appMapping:setMapping(key, bundleID)
+	local appName = nameForBundleID(bundleID)
 	hs.notify.new({ title = "Hyper + " .. key, subTitle = "Now opens " .. appName }):autoWithdraw(true):send()
 end
 
@@ -77,8 +91,8 @@ local function handleKeys()
 			if appMapping:hasMapping(key) then
 				clearMapping(key)
 			else
-				local app = hs.application.frontmostApplication():bundleID()
-				createMapping(key, app)
+				local bundleID = hs.application.frontmostApplication():bundleID()
+				createMapping(key, bundleID)
 			end
 		end, 2)
 	end
