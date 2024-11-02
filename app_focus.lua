@@ -67,7 +67,7 @@ local appMapping = AppMapping:new("AppMapping")
 
 local function createMapping(key, bundleID)
 	appMapping:setMapping(key, bundleID)
-	local appName = nameForBundleID(bundleID)
+	local appName = hs.application.nameForBundleID(bundleID)
 	hs.notify.new({ title = "Hyper + " .. key, subTitle = "Now opens " .. appName }):autoWithdraw(true):send()
 end
 
