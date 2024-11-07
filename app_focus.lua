@@ -6,6 +6,10 @@ local bindableKeys = "abcdefghijklmnopqrstuvwxyz"
 
 hs.application.enableSpotlightForNameSearches(true)
 
+local function getReadableHotkeyString(key)
+	return "Hyper + " .. string.upper(key)
+end
+
 local function hasNoWindows(app)
 	if app:title() == "Finder" then
 		return #app:allWindows() == 1
@@ -70,7 +74,7 @@ local function createMapping(key, bundleID)
 	local appName = hs.application.nameForBundleID(bundleID)
 	hs.notify
 		.new({
-			title = "Hyper + " .. key,
+			title = getReadableHotkeyString(key),
 			subTitle = "Now opens " .. appName,
 			contentImage = hs.image.imageFromAppBundle(bundleID),
 		})
@@ -80,7 +84,7 @@ end
 
 local function clearMapping(key)
 	appMapping:clearMapping(key)
-	hs.notify.new({ title = "Hyper + " .. key, subTitle = "Hotkey cleared" }):autoWithdraw(true):send()
+	hs.notify.new({ title = getReadableHotkeyString(key), subTitle = "Hotkey cleared" }):autoWithdraw(true):send()
 end
 
 -- Dynamically bind hotkeys to apps.
