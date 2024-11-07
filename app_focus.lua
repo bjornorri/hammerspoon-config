@@ -68,7 +68,14 @@ local appMapping = AppMapping:new("AppMapping")
 local function createMapping(key, bundleID)
 	appMapping:setMapping(key, bundleID)
 	local appName = hs.application.nameForBundleID(bundleID)
-	hs.notify.new({ title = "Hyper + " .. key, subTitle = "Now opens " .. appName }):autoWithdraw(true):send()
+	hs.notify
+		.new({
+			title = "Hyper + " .. key,
+			subTitle = "Now opens " .. appName,
+			contentImage = hs.image.imageFromAppBundle(bundleID),
+		})
+		:autoWithdraw(true)
+		:send()
 end
 
 local function clearMapping(key)
