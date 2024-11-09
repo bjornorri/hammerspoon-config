@@ -8,6 +8,7 @@ require("reload_config")
 require("force_paste")
 require("windows")
 require("app_focus")
+require("auto_sidecar")
 
 --- Notify that the config was loaded.
 hs.notify.new({ title = "Hammerspoon", subTitle = "Config Loaded" }):autoWithdraw(true):send()
