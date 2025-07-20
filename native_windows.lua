@@ -140,11 +140,3 @@ local function getLayout(windows, frames)
 	end
 	return layout
 end
-
-hs.hotkey.bind(Hyper, "space", function()
-	local windows = getFrontmostWindows(2)
-	if #windows == 0 or windows == nil then
-		return
-	end
-	windows[#windows]:focus()
-end)
