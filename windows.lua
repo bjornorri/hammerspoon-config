@@ -37,6 +37,34 @@ hs.hotkey.bind(Hyper, "right", function()
 	win:setFrame(f)
 end)
 
+-- Top half.
+hs.hotkey.bind(Hyper, "pageup", function()
+	local win = hs.window.focusedWindow()
+	local f = win:frame()
+	local screen = win:screen()
+	local max = screen:frame()
+
+	f.x = max.x
+	f.y = max.y
+	f.w = max.w
+	f.h = max.h / 2
+	win:setFrame(f)
+end)
+
+-- Bottom half.
+hs.hotkey.bind(Hyper, "pagedown", function()
+	local win = hs.window.focusedWindow()
+	local f = win:frame()
+	local screen = win:screen()
+	local max = screen:frame()
+
+	f.x = max.x
+	f.y = max.y + (max.h / 2)
+	f.w = max.w
+	f.h = max.h / 2
+	win:setFrame(f)
+end)
+
 -- Move to next display.
 hs.hotkey.bind(Hyper, "down", function()
 	local win = hs.window.focusedWindow()
