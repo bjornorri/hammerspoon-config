@@ -13,8 +13,8 @@ local function getReadableHotkeyString(key) return "Hyper + " .. string.upper(ke
 
 local function hasNoWindows(app)
   if not app then return true end
-  if app:title() == "Finder" then return #app:visibleWindows() <= 1 end
-  return #app:visibleWindows() == 0
+  if app:title() == "Finder" then return #app:allWindows() <= 1 end
+  return #app:allWindows() == 0
 end
 
 local function keyStroke(mods, key) hs.eventtap.keyStroke(mods, key, 10) end
