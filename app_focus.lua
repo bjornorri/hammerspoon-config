@@ -4,6 +4,8 @@
 local AppMapping = require("src/app_mapping")
 if type(AppMapping) ~= "table" then AppMapping = _G.AppMapping end
 
+local Unminimize = require("unminimize")
+
 -- Expect `Hyper` to be defined in your init.lua
 local bindableKeys = "abcdefghijklmnopqrstuvwxyz`1234567890-=[]\\,./"
 
@@ -42,6 +44,7 @@ local function smartLaunchOrFocus(bundleID)
   end
   local liveApp = hs.application.get(bundleID)
   if hasNoWindows(liveApp) then createNewWindow(liveApp); return end
+  if Unminimize.unminimizeForApp(bundleID) then return end
   focusNextWindow()
 end
 
@@ -136,7 +139,13 @@ local function smartLaunchOrFocusGroup(key, list)
     for _, bid in ipairs(order) do if rset[bid] then onlyBID = bid; break end end
     if not onlyBID then return end
     if frontBID == onlyBID then
-      if hasNoWindows(frontApp) then createNewWindow(frontApp) else focusNextWindow() end
+      if hasNoWindows(frontApp) then
+        createNewWindow(frontApp)
+      elseif Unminimize.unminimizeForApp(frontBID) then
+        -- Window was unminimized
+      else
+        focusNextWindow()
+      end
     else
       smartLaunchOrFocus(onlyBID)
       appMapping:touchMRU(key, onlyBID)

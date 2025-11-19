@@ -76,5 +76,40 @@ local function unminimizeMostRecent()
     end
 end
 
+-- Function to unminimize the most recently minimized window for a specific app
+-- Returns true if a window was unminimized, false otherwise
+local function unminimizeForApp(bundleID)
+    if not bundleID or not minimizedStacks[bundleID] then return false end
+
+    local stack = minimizedStacks[bundleID]
+
+    -- Pop from the end (LIFO - most recently minimized)
+    while #stack > 0 do
+        local window = table.remove(stack)
+
+        -- Check if window still exists and is still minimized
+        if window and window:isMinimized() then
+            window:unminimize()
+            -- Clean up empty stacks
+            if #stack == 0 then
+                minimizedStacks[bundleID] = nil
+            end
+            return true
+        end
+    end
+
+    -- Clean up empty stacks
+    if #stack == 0 then
+        minimizedStacks[bundleID] = nil
+    end
+
+    return false
+end
+
 -- Bind cmd+shift+m to unminimize the most recently minimized window
 hs.hotkey.bind({ "cmd", "shift" }, "m", unminimizeMostRecent)
+
+-- Export function for use by other modules
+return {
+    unminimizeForApp = unminimizeForApp
+}
