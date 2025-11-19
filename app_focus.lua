@@ -5,7 +5,7 @@ local AppMapping = require("src/app_mapping")
 if type(AppMapping) ~= "table" then AppMapping = _G.AppMapping end
 
 -- Expect `Hyper` to be defined in your init.lua
-local bindableKeys = "abcdefghijklmnopqrstuvwxyz"
+local bindableKeys = "abcdefghijklmnopqrstuvwxyz`1234567890-=[]\\,./"
 
 hs.application.enableSpotlightForNameSearches(true)
 
