@@ -106,9 +106,6 @@ local function unminimizeForApp(bundleID)
     return false
 end
 
--- Bind cmd+shift+m to unminimize the most recently minimized window
-hs.hotkey.bind({ "cmd", "shift" }, "m", unminimizeMostRecent)
-
 -- Export function for use by other modules
 return {
     unminimizeForApp = unminimizeForApp
